@@ -18,8 +18,9 @@ export class Pattern2Stack extends Stack {
         version: '0.2',
         phases: {
           install: {
-            commands: [ 
+            commands: [
               'cd pattern2',
+              'echo "Installing NPM dependencies..."',
               'npm install'
             ]
           },
