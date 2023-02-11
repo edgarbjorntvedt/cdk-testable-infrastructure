@@ -14,3 +14,6 @@ pattern*/.parcel-cache
 
 pattern*/.idea
 pattern*/__pycache__
+
+.obsidian
+.idea

@@ -35,7 +35,7 @@ export class LambdaTestStack extends Stack {
     defaultsRole.addResources('*');
     lambdaTestDefaults.addToRolePolicy(defaultsRole);
     
-    // Publish ARN as an output - it's needed to invoke the Lmabda later in the pipeline
+    // Publish ARN as an output - it's needed to invoke the Lambda later in the pipeline
     new CfnOutput(this, 'LambdaDefaultsARN', { value: lambdaTestDefaults.functionArn });
 
     // Define Lambda Test Networking
@@ -60,7 +60,7 @@ export class LambdaTestStack extends Stack {
       networkingRole.addResources('*');
       lambdaTestNetworking.addToRolePolicy(networkingRole);
 
-    // Publish ARN as an output - it's needed to invoke the Lmabda later in the pipeline
+    // Publish ARN as an output - it's needed to invoke the Lambda later in the pipeline
     new CfnOutput(this, 'LambdaNetworkingARN', { value: lambdaTestNetworking.functionArn });
 
     // Define Lambda Test Security
@@ -86,7 +86,7 @@ export class LambdaTestStack extends Stack {
     securityRole.addResources('*');
     lambdaTestSecurity.addToRolePolicy(securityRole);
         
-    // Publish ARN as an output - it's needed to invoke the Lmabda later in the pipeline
+    // Publish ARN as an output - it's needed to invoke the Lambda later in the pipeline
     new CfnOutput(this, 'LambdaSecurityARN', { value: lambdaTestSecurity.functionArn });
   }
 }

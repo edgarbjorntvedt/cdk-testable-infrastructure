@@ -1,6 +1,6 @@
-import { App, Stack, StackProps, Duration } from 'aws-cdk-lib';
+import {App, Stack, StackProps, Duration, SecretValue} from 'aws-cdk-lib';
 import { aws_iam, aws_lambda } from 'aws-cdk-lib';
-import { aws_codecommit, aws_codebuild, aws_codepipeline, aws_codepipeline_actions } from 'aws-cdk-lib';
+import { aws_codebuild, aws_codepipeline, aws_codepipeline_actions } from 'aws-cdk-lib';
 import * as path from 'path';
 
 export interface PipelineStackProps extends StackProps {
@@ -13,17 +13,13 @@ export class Pattern2Stack extends Stack {
 
     super(scope, id, props);
 
-    // Create a repository for our Pattern 2 code
-    const code = new aws_codecommit.Repository(this, 'CodeCommitRepo', {
-      repositoryName: `pattern2-repo`
-    });
-
     const build = new aws_codebuild.PipelineProject(this, 'Pattern2Build', {
       buildSpec: aws_codebuild.BuildSpec.fromObject({
         version: '0.2',
         phases: {
           install: {
             commands: [ 
+              'cd pattern2',
               'npm install'
             ]
           },
@@ -80,9 +76,12 @@ export class Pattern2Stack extends Stack {
         {
           stageName: 'Source',
           actions: [
-            new aws_codepipeline_actions.CodeCommitSourceAction({
-              actionName: 'CodeCommit_Source',
-              repository: code,
+            new aws_codepipeline_actions.GitHubSourceAction({
+              actionName: 'Github_Source',
+              owner: 'edgarbjorntvedt',
+              repo: 'cdk-testable-infrastructure',
+              oauthToken: SecretValue.secretsManager('edgars-github-token'),
+              trigger: aws_codepipeline_actions.GitHubTrigger.WEBHOOK,
               output: sourceOutput,
               branch: 'main'
             }),
